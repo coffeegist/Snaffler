@@ -80,7 +80,7 @@ namespace SnaffCore
             DateTime startTime = DateTime.Now;
             // This is the main execution thread.
             Timer statusUpdateTimer =
-                new Timer(TimeSpan.FromMinutes(0.5)
+                new Timer(TimeSpan.FromMinutes(5)//0.5)
                     .TotalMilliseconds)
                 { AutoReset = true }; // Set the time (1 min in this case)
             statusUpdateTimer.Elapsed += TimedStatusUpdate;
@@ -254,8 +254,8 @@ namespace SnaffCore
             TaskCounters treeTaskCounters = TreeTaskScheduler.Scheduler.GetTaskCounters();
             TaskCounters fileTaskCounters = FileTaskScheduler.Scheduler.GetTaskCounters();
 
-            StringBuilder updateText = new StringBuilder("Status Update: \n");
-            updateText.Append("ShareFinder Tasks Completed: " + shareTaskCounters.CompletedTasks + "\n");
+            StringBuilder updateText = new StringBuilder("Still running: \n");
+            /*updateText.Append("ShareFinder Tasks Completed: " + shareTaskCounters.CompletedTasks + "\n");
             updateText.Append("ShareFinder Tasks Remaining: " + shareTaskCounters.CurrentTasksRemaining + "\n");
             updateText.Append("ShareFinder Tasks Running: " + shareTaskCounters.CurrentTasksRunning + "\n");
             updateText.Append("TreeWalker Tasks Completed: " + treeTaskCounters.CompletedTasks + "\n");
@@ -263,7 +263,7 @@ namespace SnaffCore
             updateText.Append("TreeWalker Tasks Running: " + treeTaskCounters.CurrentTasksRunning + "\n");
             updateText.Append("FileScanner Tasks Completed: " + fileTaskCounters.CompletedTasks + "\n");
             updateText.Append("FileScanner Tasks Remaining: " + fileTaskCounters.CurrentTasksRemaining + "\n");
-            updateText.Append("FileScanner Tasks Running: " + fileTaskCounters.CurrentTasksRunning + "\n");
+            updateText.Append("FileScanner Tasks Running: " + fileTaskCounters.CurrentTasksRunning + "\n");*/
             updateText.Append(memorynumber + " RAM in use.");
 
             Mq.Info(updateText.ToString());
