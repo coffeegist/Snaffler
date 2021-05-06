@@ -23,7 +23,7 @@ namespace SnaffCore.TreeWalk
             FileScanner = SnaffCon.GetFileScanner();
         }
 
-        public void WalkTree(string currentDir)
+        public void WalkTree(string currentDir, int delayTime = 1)
         {
              // Walks a tree checking files and generating results as it goes.
              
@@ -38,8 +38,8 @@ namespace SnaffCore.TreeWalk
                  // check if we actually like the files
                  foreach (string file in files)
                  {
-                     FileTaskScheduler.New(() =>
-                     {
+                     //FileTaskScheduler.New(() =>
+                     //{
                          try
                          {
                              FileScanner.ScanFile(file);
@@ -49,7 +49,10 @@ namespace SnaffCore.TreeWalk
                              Mq.Error("Exception in FileScanner task for file " + file);
                              Mq.Trace(e.ToString());
                          }
-                     });
+
+                        //Mq.Info("Sleeping " + delayTime.ToString() + " Seconds");
+                         System.Threading.Thread.Sleep(delayTime);
+                     //});
                  }
              }
              catch (UnauthorizedAccessException)
@@ -77,6 +80,7 @@ namespace SnaffCore.TreeWalk
 
                     foreach (string dirStr in subDirs)
                     {
+                        Mq.Degub($"Processing directory {dirStr}");
                         foreach (ClassifierRule classifier in MyOptions.DirClassifiers)
                         {
                             try
@@ -86,18 +90,18 @@ namespace SnaffCore.TreeWalk
 
                                 if (dirResult.ScanDir)
                                 {
-                                    TreeTaskScheduler.New(() =>
-                                    {
+                                    //TreeTaskScheduler.New(() =>
+                                    //{
                                         try
                                         {
-                                            WalkTree(dirStr);
+                                            WalkTree(dirStr, delayTime);
                                         }
                                         catch (Exception e)
                                         {
                                             Mq.Error("Exception in TreeWalker task for dir " + dirStr);
                                             Mq.Error(e.ToString());
                                         }
-                                    });
+                                    //});
                                 }
                             }
                             catch (Exception e)
@@ -105,6 +109,9 @@ namespace SnaffCore.TreeWalk
                                 Mq.Trace(e.ToString());
                                 continue;
                             }
+
+                            // Mq.Info("Sleeping " + delayTime.ToString() + " Seconds");
+                            System.Threading.Thread.Sleep(delayTime);
                         }
                     }
                 }

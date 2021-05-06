@@ -65,6 +65,8 @@ namespace SnaffCore.Config
         // Content processing options
         public int MatchContextBytes { get; set; } = 200;
 
+        public int DelayTime { get; set; } = 1;
+
         public Options()
         {
             //PrepareClassifiers();

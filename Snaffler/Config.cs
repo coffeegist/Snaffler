@@ -67,6 +67,7 @@ namespace Snaffler
                 "How many bytes of context either side of found strings in files to show, e.g. -j 200");
             SwitchArgument domainUserArg = new SwitchArgument('u', "domainusers", "Makes Snaffler grab a list of interesting-looking accounts from the domain and uses them in searches.", false);
             SwitchArgument tsvArg = new SwitchArgument('y', "tsv", "Makes Snaffler output as tsv.", false);
+            ValueArgument<int> delayArg = new ValueArgument<int>('p', "pause", "Time to pause between operations in milliseconds.");
 
             // list of letters i haven't used yet: abefgknpqwx
 
@@ -85,6 +86,7 @@ namespace Snaffler
             parser.Arguments.Add(grepContextArg);
             parser.Arguments.Add(domainUserArg);
             parser.Arguments.Add(tsvArg);
+            parser.Arguments.Add(delayArg);
 
             // extra check to handle builtin behaviour from cmd line arg parser
             if ((args.Contains("--help") || args.Contains("/?") || args.Contains("help") || args.Contains("-h") || args.Length == 0))
@@ -228,6 +230,11 @@ namespace Snaffler
                         Mq.Info("Wrote default config values to .\\default.toml");
                         Mq.Terminate();
                     }
+                }
+
+                if (delayArg.Parsed)
+                {
+                    parsedConfig.DelayTime = delayArg.Value;
                 }
 
                 parsedConfig.PrepareClassifiers();

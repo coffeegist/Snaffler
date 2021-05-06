@@ -212,18 +212,21 @@ namespace SnaffCore
             {
                 // ShareScanner Task Creation - this kicks off the rest of the flow
                 Mq.Info("Creating a TreeWalker task for " + pathTarget);
-                TreeTaskScheduler.New(() =>
-                {
+                //TreeTaskScheduler.New(() =>
+                //{
                     try
                     {
-                        TreeWalker.WalkTree(pathTarget);
+                        TreeWalker.WalkTree(pathTarget, MyOptions.DelayTime);
                     }
                     catch (Exception e)
                     {
                         Mq.Error("Exception in TreeWalker task for path " + pathTarget);
                         Mq.Error(e.ToString());
                     }
-                });
+                //});
+
+                // Mq.Info("Sleeping " + MyOptions.DelayTime.ToString() + " Seconds");
+                System.Threading.Thread.Sleep(MyOptions.DelayTime);
             }
 
             Mq.Info("Created all TreeWalker tasks.");
